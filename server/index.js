@@ -89,9 +89,13 @@ io.on('connection', (socket) => {
   console.log(' A user connected');
 });
 
-server.listen(process.env.PORT || 5000, '0.0.0.0', () =>
-  console.log(`🚀 Server running on port ${process.env.PORT || 5000}`)
+const PORT = process.env.PORT || 5000;
+const HOST = process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost';
+
+server.listen(PORT, HOST, () =>
+  console.log(`Server running at http://${HOST}:${PORT}`)
 );
+
 
 
 
