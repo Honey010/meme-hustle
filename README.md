@@ -59,7 +59,7 @@ memehustle/
 
 
 ---
-## ⚙️ Local Setup Instructions
+##  Local Setup Instructions
 
 ### 1. Clone the Repository
 
@@ -110,7 +110,7 @@ Test Checklist
  Bidding system updates in real-time
 
  Leaderboard updates based on upvotes
- 
+
 ---
 
 Author

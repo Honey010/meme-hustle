@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+import { io } from "socket.io-client";
 
 const express = require('express');
 const cors = require('cors');
@@ -88,6 +89,11 @@ app.delete('/memes/:id', async (req, res) => {
 io.on('connection', (socket) => {
   console.log(' A user connected');
 });
+
+
+
+const socket = io(process.env.REACT_APP_BACKEND_URL);
+
 
 const PORT = process.env.PORT || 5000;
 const HOST = process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost';
