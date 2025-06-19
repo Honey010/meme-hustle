@@ -4,20 +4,31 @@ import MemeGallery from './components/MemeGallery';
 import axios from 'axios';
 import { io } from 'socket.io-client';
 
-const socket = io('http://localhost:5000'); 
+// Use env variable instead of hardcoded localhost
+const socket = io(process.env.REACT_APP_BACKEND_URL);
 
 function App() {
   const [memes, setMemes] = useState([]);
 
   const loadMemes = async () => {
-    const res = await axios.get('http://localhost:5000/leaderboard');
-    setMemes(res.data);
+    try {
+      const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/leaderboard`);
+      setMemes(res.data);
+    } catch (error) {
+      console.error('Failed to load memes:', error);
+    }
   };
+
+  useEffect(() => {
+    //  Wake up Render backend
+    axios.get(`${process.env.REACT_APP_BACKEND_URL}/leaderboard`)
+      .catch(err => console.log("Backend wake-up ping failed:", err));
+  }, []);
 
   useEffect(() => {
     loadMemes();
 
-    // Listen for vote updates
+    //  Listen for vote updates
     socket.on('vote-update', () => {
       loadMemes();
     });

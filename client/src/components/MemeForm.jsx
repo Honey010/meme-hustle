@@ -8,11 +8,13 @@ const MemeForm = ({ onMemeCreated }) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     const tagsArray = form.tags.split(',').map(tag => tag.trim());
     try {
-      const res = await axios.post('http://localhost:5000/memes', {
+      const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/memes`, {
         ...form,
         tags: tagsArray,
       });
@@ -29,7 +31,7 @@ const MemeForm = ({ onMemeCreated }) => {
       <input type="text" name="image_url" placeholder="Image URL (optional)" value={form.image_url} onChange={handleChange} className="w-full mb-3 p-2 rounded bg-gray-800 border border-blue-500" />
       <input type="text" name="tags" placeholder="Tags (comma separated)" value={form.tags} onChange={handleChange} required className="w-full mb-3 p-2 rounded bg-gray-800 border border-purple-500" />
       <button type="submit" className="w-full py-2 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-purple-500 hover:to-pink-500 text-black font-bold rounded">
-        🚀 Create Meme
+         Create Meme
       </button>
     </form>
   );
