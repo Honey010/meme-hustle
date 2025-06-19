@@ -39,8 +39,9 @@ function App() {
   }, []);
 
   return (
+    <div className="font-neon bg-black text-white min-h-screen">...</div>,
     <div className="min-h-screen bg-black text-white p-4">
-      <h1 className="text-4xl font-bold text-center text-pink-500 mb-6">⚡ MemeHustle</h1>
+      <h1 className="text-4xl glitch font-neon text-center">⚡ MemeHustle</h1>
       <MemeForm onMemeCreated={(meme) => setMemes([meme, ...memes])} />
       <MemeGallery memes={memes} refresh={loadMemes} />
     </div>

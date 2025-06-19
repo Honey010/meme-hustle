@@ -48,7 +48,14 @@ const MemeGallery = ({ memes, refresh }) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4">
       {memes.map((meme) => (
-        <div key={meme.id} className="bg-gray-800 p-4 rounded-xl text-white shadow-lg border border-pink-500">
+        <div
+  key={meme.id}
+  className="bg-gray-800 p-4 rounded-xl text-white 
+             border border-pink-500 
+             shadow-[0_0_15px_rgba(255,0,255,0.6)] 
+             hover:shadow-[0_0_20px_rgba(0,255,255,0.8)] 
+             transition-all duration-300"
+>
           <img
             src={meme.image_url || 'https://picsum.photos/300'}
             alt={meme.title}
@@ -58,9 +65,10 @@ const MemeGallery = ({ memes, refresh }) => {
           <p className="italic text-sm text-pink-400 mb-2">{meme.caption}</p>
           <p className="text-xs text-gray-300 mb-2">Tags: {meme.tags?.join(', ')}</p>
           <div className="flex items-center justify-between mb-3">
-            <button onClick={() => handleVote(meme.id, 'up')} className="px-2 py-1 bg-pink-600 hover:bg-pink-700 text-white rounded">▲</button>
+            <button
+            onClick={() => handleVote(meme.id, 'up')} className="px-2 py-1 bg-pink-600 text-white rounded hover:shadow-[0_0_8px_rgba(255,0,255,0.8)] transition-all duration-200">▲</button>
             <span>{meme.upvotes ?? 0}</span>
-            <button onClick={() => handleVote(meme.id, 'down')} className="px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded">▼</button>
+            <button onClick={() => handleVote(meme.id, 'down')} className="px-2 py-1 bg-pink-600 text-white rounded hover:shadow-[0_0_8px_rgba(255,0,255,0.8)] transition-all duration-200">▼</button>
           </div>
           <div className="flex items-center">
             <input
