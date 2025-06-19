@@ -1,7 +1,4 @@
 require('dotenv').config();
-
-import { io } from "socket.io-client";
-
 const express = require('express');
 const cors = require('cors');
 const http = require('http');
@@ -11,14 +8,27 @@ const generateCaption = require('./utils/gemini');
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server, { cors: { origin: '*' } });
+
+//  Proper Socket.IO setup with CORS
+const io = new Server(server, {
+  cors: {
+    origin: [
+      'http://localhost:3000',
+      'https://meme-hustle-eosin.vercel.app'
+    ],
+    methods: ['GET', 'POST']
+  }
+});
 
 app.use(cors());
 app.use(express.json());
+
 const USER_ID = 'cyberpunk420';
 
+//  Create Meme
 app.post('/memes', async (req, res) => {
   const { title, image_url, tags } = req.body;
+
   const { data, error } = await supabase
     .from('memes')
     .insert([{ title, image_url, tags, upvotes: 0, owner_id: USER_ID }])
@@ -32,6 +42,7 @@ app.post('/memes', async (req, res) => {
   res.json({ ...data[0], caption });
 });
 
+//  Vote Meme
 app.post('/memes/:id/vote', async (req, res) => {
   const meme_id = req.params.id;
   const { type } = req.body;
@@ -44,10 +55,10 @@ app.post('/memes/:id/vote', async (req, res) => {
   res.json({ success: true });
 });
 
+//  Bid on Meme
 app.post('/memes/:id/bid', async (req, res) => {
   const meme_id = req.params.id;
   const { credits } = req.body;
-  const USER_ID = 'cyberpunk420'; // mock user for now
 
   const { error } = await supabase
     .from('bids')
@@ -59,7 +70,7 @@ app.post('/memes/:id/bid', async (req, res) => {
   res.json({ success: true });
 });
 
-
+//  Get Leaderboard
 app.get('/leaderboard', async (req, res) => {
   const { data, error } = await supabase
     .from('memes')
@@ -71,6 +82,7 @@ app.get('/leaderboard', async (req, res) => {
   res.json(data);
 });
 
+//  Delete Meme
 app.delete('/memes/:id', async (req, res) => {
   const meme_id = req.params.id;
 
@@ -84,24 +96,15 @@ app.delete('/memes/:id', async (req, res) => {
   res.json({ success: true });
 });
 
-
-
+// Socket.IO Events
 io.on('connection', (socket) => {
-  console.log(' A user connected');
+  console.log('A user connected via Socket.IO');
 });
 
-
-
-const socket = io(process.env.REACT_APP_BACKEND_URL);
-
-
+//Start server (Render & local compatible)
 const PORT = process.env.PORT || 5000;
 const HOST = process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost';
 
 server.listen(PORT, HOST, () =>
   console.log(`Server running at http://${HOST}:${PORT}`)
 );
-
-
-
-
