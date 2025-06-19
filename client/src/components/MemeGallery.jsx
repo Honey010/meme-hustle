@@ -6,7 +6,7 @@ const MemeGallery = ({ memes, refresh }) => {
 
   const handleVote = async (id, type) => {
     try {
-      await axios.post(`http://localhost:5000/memes/${id}/vote`, { type });
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/memes/${id}/vote`, { type });
       refresh(); // reload memes
     } catch (error) {
       console.error('Vote error:', error);
@@ -22,7 +22,7 @@ const MemeGallery = ({ memes, refresh }) => {
       const credits = parseInt(bidAmount[id] || 0);
       if (credits <= 0 || isNaN(credits)) return alert("Enter valid credits!");
 
-      await axios.post(`http://localhost:5000/memes/${id}/bid`, { credits });
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/memes/${id}/bid`, { credits });
       alert('Bid submitted!');
       setBidAmount({ ...bidAmount, [id]: '' });
     } catch (error) {
@@ -36,7 +36,7 @@ const MemeGallery = ({ memes, refresh }) => {
   if (!confirmDelete) return;
 
   try {
-    await axios.delete(`http://localhost:5000/memes/${id}`);
+    await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/memes/${id}`,);
     refresh(); // reload updated list
   } catch (error) {
     console.error('Delete failed:', error);
