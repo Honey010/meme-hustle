@@ -89,6 +89,9 @@ io.on('connection', (socket) => {
   console.log(' A user connected');
 });
 
-server.listen(5000, () => console.log('Server running on http://localhost:5000'));
+server.listen(process.env.PORT || 5000, '0.0.0.0', () =>
+  console.log(`🚀 Server running on port ${process.env.PORT || 5000}`)
+);
+
 
 
